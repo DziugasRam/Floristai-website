@@ -1,16 +1,31 @@
 <script lang="ts">
-	import Header from '$lib/header/Header.svelte';
+	import TopAppBar, { Row, Section, Title } from '@smui/top-app-bar';
+	import IconButton from '@smui/icon-button';
+	import Checkbox from '@smui/checkbox';
 	import '../app.css';
 </script>
 
-<Header />
+<header>
+	<div class="top-app-bar-container flexor">
+		<TopAppBar variant="static" color={'primary'}>
+			<Row>
+				<Section>
+					<Title>Floristai</Title>
+				</Section>
+				<Section align="end" toolbar>
+					<IconButton class="material-icons" aria-label="Profile">person</IconButton>
+					<IconButton class="material-icons" aria-label="Shopping Cart">shopping_cart</IconButton>
+				</Section>
+			</Row>
+		</TopAppBar>
+	</div>
+</header>
 
 <main>
 	<slot />
 </main>
 
 <footer>
-	<p>visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to learn SvelteKit</p>
 </footer>
 
 <style>
@@ -20,9 +35,7 @@
 		flex-direction: column;
 		padding: 1rem;
 		width: 100%;
-		max-width: 1024px;
 		margin: 0 auto;
-		box-sizing: border-box;
 	}
 
 	footer {
@@ -33,13 +46,21 @@
 		padding: 40px;
 	}
 
-	footer a {
-		font-weight: bold;
-	}
-
 	@media (min-width: 480px) {
 		footer {
 			padding: 40px 0;
 		}
+	}
+
+	.top-app-bar-container {
+		width: 100%;
+		background-color: var(--mdc-theme-background, #fff);
+
+		display: inline-block;
+	}
+
+	.flexor {
+		display: inline-flex;
+		flex-direction: column;
 	}
 </style>
