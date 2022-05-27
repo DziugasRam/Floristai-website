@@ -10,11 +10,15 @@
 		<TopAppBar variant="static" color={'primary'}>
 			<Row>
 				<Section>
-					<Title>Floristai</Title>
+					<a href="/" style="color: inherit">
+						<Title>Floristai</Title>
+					</a>
 				</Section>
 				<Section align="end" toolbar>
-					<IconButton class="material-icons" aria-label="Profile">person</IconButton>
-					<IconButton class="material-icons" aria-label="Shopping Cart">shopping_cart</IconButton>
+					<IconButton class="material-icons" aria-label="Profile" href="/profile">person</IconButton>
+					<IconButton class="material-icons" aria-label="Shopping Cart" href="/shopping-cart"
+						>shopping_cart</IconButton
+					>
 				</Section>
 			</Row>
 		</TopAppBar>
@@ -25,8 +29,7 @@
 	<slot />
 </main>
 
-<footer>
-</footer>
+<footer />
 
 <style>
 	main {

@@ -3,7 +3,7 @@
 </script>
 
 <script lang="ts">
-	import { flowers, flowersFilter, flowersLoading, shoppingCart, type Flower } from '../stores';
+	import { flowers, flowersFilter, flowersLoading, shoppingCart, type Flower } from '../../stores';
 	import Card, {
 		Content,
 		PrimaryAction,
@@ -19,30 +19,18 @@
 	import LinearProgress from '@smui/linear-progress';
 	import Slider from '@smui/slider';
 	import TextField from '@smui/textfield';
+	import { deleteFlower } from '../../api';
 
-	const addToCart = (flower: Flower) => {
-		shoppingCart.update(cart => {
-			if(!cart) return {items: [{flowerId: flower.name, quantity: 1}]};
-			const cartFlower = cart.items.find(item => item.flowerId === flower.name)
-			if(!cartFlower) cart.items.push({quantity: 1, flowerId: flower.name});
-			else cartFlower.quantity++;
-			return cart;
-		});
-	}
+	const deleteFlowerById = async (flowerId: string) => {
+		try {
+			await deleteFlower(flowerId);
+		} catch {
+			alert('Failed to delete flower');
+		}
+	};
 </script>
 
-<svelte:head>
-	<title>Floristai</title>
-	<meta name="description" content="Floristai flower shop" />
-</svelte:head>
-
 <div class="root">
-	<div>
-		<h1>Title</h1>
-		<p>something</p>
-		<p>maybe some image</p>
-		<p>filters for types of flowers (recommended, exotic, on sale, new)</p>
-	</div>
 	<div class="content">
 		<div class="side-content">
 			<div class="filter">
@@ -102,7 +90,8 @@
 										<div class="flower-image-wrapper">
 											<img
 												class="flower-image"
-												src={flower.imageUrl ?? 'https://m.media-amazon.com/images/I/51rYKzn7ciL.jpg'}
+												src={flower.imageUrl ??
+													'https://m.media-amazon.com/images/I/51rYKzn7ciL.jpg'}
 												alt="Flower"
 											/>
 										</div>
@@ -117,8 +106,10 @@
 							</PrimaryAction>
 							<Actions>
 								<ActionIcons>
-									<IconButton class="material-icons" on:click={() => addToCart(flower)} title="Add to cart"
-										>shopping_cart</IconButton
+									<IconButton
+										class="material-icons"
+										on:click={() => deleteFlowerById(flower.name)}
+										title="Delete">delete_outline</IconButton
 									>
 								</ActionIcons>
 							</Actions>
