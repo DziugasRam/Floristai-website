@@ -29,9 +29,9 @@
 
 	const addToCart = (flower: Flower) => {
 		shoppingCart.update((cart) => {
-			if (!cart) return { items: [{ flowerId: flower.name, quantity: 1 }] };
-			const cartFlower = cart.items.find((item) => item.flowerId === flower.name);
-			if (!cartFlower) cart.items.push({ quantity: 1, flowerId: flower.name });
+			if (!cart || !cart.items) return { items: [{ flowerId: flower.flowerId, quantity: 1 }] };
+			const cartFlower = cart.items.find((item) => item.flowerId === flower.flowerId);
+			if (!cartFlower) cart.items.push({ quantity: 1, flowerId: flower.flowerId });
 			else cartFlower.quantity++;
 			return cart;
 		});

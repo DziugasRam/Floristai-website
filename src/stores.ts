@@ -89,7 +89,7 @@ export type Flower = {
 export type ShoppingCart = {
 	items: {
 		quantity: number;
-		flowerId: string;
+		flowerId: number;
 	}[];
 };
 
