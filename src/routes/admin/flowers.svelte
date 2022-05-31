@@ -3,7 +3,7 @@
 </script>
 
 <script lang="ts">
-	import { flowers, flowersFilter, flowersLoading, shoppingCart, type Flower } from '../../stores';
+	import { flowers, flowersFilter, flowersLoading, shoppingCart, user, type Flower } from '../../stores';
 	import Card, {
 		Content,
 		PrimaryAction,
@@ -20,10 +20,13 @@
 	import Slider from '@smui/slider';
 	import TextField from '@smui/textfield';
 	import { deleteFlower } from '../../api';
+import { goto } from '$app/navigation';
 
-	const deleteFlowerById = async (flowerId: string) => {
+	const deleteFlowerById = async (flowerId: number) => {
 		try {
-			await deleteFlower(flowerId);
+			if($user?.token)
+				await deleteFlower(flowerId, $user.token);
+				flowersFilter.update(v => v);
 		} catch {
 			alert('Failed to delete flower');
 		}
@@ -84,7 +87,7 @@
 					<Cell span={3}>
 						<Card padded={false} variant="outlined">
 							<!-- open flower page/dialog on click -->
-							<PrimaryAction on:click={() => undefined}>
+							<PrimaryAction on:click={() => goto(`/admin/flower?id=${flower.flowerId}`)}>
 								<Media aspectRatio="square">
 									<MediaContent>
 										<div class="flower-image-wrapper">
@@ -108,7 +111,7 @@
 								<ActionIcons>
 									<IconButton
 										class="material-icons"
-										on:click={() => deleteFlowerById(flower.name)}
+										on:click={() => deleteFlowerById(flower.flowerId)}
 										title="Delete">delete_outline</IconButton
 									>
 								</ActionIcons>

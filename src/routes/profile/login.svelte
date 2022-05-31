@@ -15,7 +15,7 @@
 	import LinearProgress from '@smui/linear-progress';
 	import Slider from '@smui/slider';
 	import Textfield from '@smui/textfield';
-	import { login } from '../../api';
+	import { getCurrentUser, login } from '../../api';
 	import { goto } from '$app/navigation';
 
 	let email = '';
@@ -24,10 +24,12 @@
 	const handleSubmit = async () => {
 		try {
 			const token = await login(email, password);
+			const currentUser = await getCurrentUser(token);
 			user.set({
+				...currentUser,
 				token
 			});
-			goto("/");
+			goto('/');
 		} catch {
 			alert('Login failed. Try again.');
 		}

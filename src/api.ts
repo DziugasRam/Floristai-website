@@ -2,18 +2,46 @@ import type { Flower, FlowersFilter, User } from './stores';
 
 const BASE_URL = 'https://localhost:7155/';
 
-export const getFlowers = async (filter: FlowersFilter, user: User | undefined) => {
-	const result = await fetch(
-		`${BASE_URL}flower/filter?$filter=Price ge ${filter.minPrice} and Price le ${filter.maxPrice}`,
-		{
-			method: 'GET',
-			headers: {
-				Accept: 'application/json',
-				...(user && user.token ? { Authorization: `Bearer ${user.token}` } : {})
-			}
+export const getFlower = async (id: string) => {
+	let url = `${BASE_URL}flower?$filter=FlowerId eq ${id}`;
+
+	const result = await fetch(url, {
+		method: 'GET',
+		headers: {
+			Accept: 'application/json'
 		}
-	);
+	});
+	return (await result.json())[0] as Flower;
+};
+
+export const getFlowers = async (filter: FlowersFilter) => {
+	let url = `${BASE_URL}flower?$filter=Price ge ${filter.minPrice} and Price le ${filter.maxPrice}`;
+
+	if (filter.occasion.length > 0)
+		url += ` and Occasion in (${filter.occasion.map((o) => `'${o}'`).join(',')})`;
+	if (filter.packaging.length > 0)
+		url += ` and Packaging in (${filter.packaging.map((p) => `'${p}'`).join(',')})`;
+
+	const result = await fetch(url, {
+		method: 'GET',
+		headers: {
+			Accept: 'application/json'
+		}
+	});
 	return (await result.json()) as Flower[];
+};
+
+export const getCurrentUser = async (token: string) => {
+	const result = await fetch(`${BASE_URL}user/current`, {
+		method: 'GET',
+		headers: {
+			Authorization: `Bearer ${token}`
+		}
+	});
+
+	if (!result.ok) throw new Error(`Get user failed with status code: ${result.status}`);
+
+	return (await result.json()) as User;
 };
 
 export const login = async (email: string, password: string) => {
@@ -39,15 +67,14 @@ export const register = async (email: string, password: string) => {
 	});
 
 	if (!result.ok) throw new Error(`Register failed with status code: ${result.status}`);
-
-	return await result.text();
 };
 
-export const createFlower = async (flower: Flower) => {
+export const createFlower = async (flower: Flower, token: string) => {
 	const result = await fetch(`${BASE_URL}flower`, {
 		method: 'POST',
 		headers: {
-			'Content-Type': 'application/json'
+			'Content-Type': 'application/json',
+			Authorization: `Bearer ${token}`
 		},
 		body: JSON.stringify(flower)
 	});
@@ -57,9 +84,29 @@ export const createFlower = async (flower: Flower) => {
 	return await result.json();
 };
 
-export const deleteFlower = async (flowerId: string) => {
-	const result = await fetch(`${BASE_URL}flower/${flowerId}`, {
+export const updateFlower = async (flower: Flower, token: string) => {
+	const result = await fetch(`${BASE_URL}flower`, {
+		method: 'PUT',
+		headers: {
+			'Content-Type': 'application/json',
+			Authorization: `Bearer ${token}`
+		},
+		body: JSON.stringify(flower)
+	});
+
+	if (!result.ok) throw new Error(`Create flower failed with status code: ${result.status}`);
+
+	return await result.json();
+};
+
+export const deleteFlower = async (flowerId: number, token: string) => {
+	const result = await fetch(`${BASE_URL}flower`, {
 		method: 'DELETE',
+		headers: {
+			'Content-Type': 'application/json',
+			Authorization: `Bearer ${token}`
+		},
+		body: flowerId + ""
 	});
 
 	if (!result.ok) throw new Error(`Delete flower failed with status code: ${result.status}`);

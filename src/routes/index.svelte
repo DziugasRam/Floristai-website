@@ -3,7 +3,14 @@
 </script>
 
 <script lang="ts">
-	import { flowers, flowersFilter, flowersLoading, shoppingCart, type Flower } from '../stores';
+	import {
+		favorites,
+		flowers,
+		flowersFilter,
+		flowersLoading,
+		shoppingCart,
+		type Flower
+	} from '../stores';
 	import Card, {
 		Content,
 		PrimaryAction,
@@ -21,14 +28,25 @@
 	import TextField from '@smui/textfield';
 
 	const addToCart = (flower: Flower) => {
-		shoppingCart.update(cart => {
-			if(!cart) return {items: [{flowerId: flower.name, quantity: 1}]};
-			const cartFlower = cart.items.find(item => item.flowerId === flower.name)
-			if(!cartFlower) cart.items.push({quantity: 1, flowerId: flower.name});
+		shoppingCart.update((cart) => {
+			if (!cart) return { items: [{ flowerId: flower.name, quantity: 1 }] };
+			const cartFlower = cart.items.find((item) => item.flowerId === flower.name);
+			if (!cartFlower) cart.items.push({ quantity: 1, flowerId: flower.name });
 			else cartFlower.quantity++;
 			return cart;
 		});
-	}
+	};
+
+	const toggleFavorites = (flower: Flower) => {
+		favorites.update((favorites) => {
+			if (!favorites) return [flower];
+			if (favorites.some((f) => f.flowerId === flower.flowerId)) {
+				return favorites.filter((f) => f.flowerId !== flower.flowerId);
+			} else {
+				return [...favorites, flower];
+			}
+		});
+	};
 </script>
 
 <svelte:head>
@@ -102,7 +120,8 @@
 										<div class="flower-image-wrapper">
 											<img
 												class="flower-image"
-												src={flower.imageUrl ?? 'https://m.media-amazon.com/images/I/51rYKzn7ciL.jpg'}
+												src={flower.imageUrl ??
+													'https://m.media-amazon.com/images/I/51rYKzn7ciL.jpg'}
 												alt="Flower"
 											/>
 										</div>
@@ -117,8 +136,18 @@
 							</PrimaryAction>
 							<Actions>
 								<ActionIcons>
-									<IconButton class="material-icons" on:click={() => addToCart(flower)} title="Add to cart"
-										>shopping_cart</IconButton
+									<IconButton
+										class="material-icons"
+										on:click={() => toggleFavorites(flower)}
+										title="Favorite"
+										>{$favorites?.some((f) => f.flowerId === flower.flowerId)
+											? 'favorite'
+											: 'favorite_border'}</IconButton
+									>
+									<IconButton
+										class="material-icons"
+										on:click={() => addToCart(flower)}
+										title="Add to cart">shopping_cart</IconButton
 									>
 								</ActionIcons>
 							</Actions>

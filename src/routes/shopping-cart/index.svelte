@@ -9,7 +9,7 @@
 	);
 	const removeFlowerQuanity = (flowerId: string | undefined) => {
 		shoppingCart.update((cart) => {
-			if (!cart) return;
+			if (!cart) return null;
 			const cartItemIndex = cart.items.findIndex((item) => item.flowerId === flowerId);
 			if (cartItemIndex === -1) return cart;
 			const cartItem = cart.items[cartItemIndex];
@@ -21,7 +21,7 @@
 	};
 	const addFlowerQuanity = (flowerId: string | undefined) => {
 		shoppingCart.update((cart) => {
-			if (!cart) return;
+			if (!cart) return null;
 			const cartItemIndex = cart.items.findIndex((item) => item.flowerId === flowerId);
 			if (cartItemIndex === -1) return cart;
 			const cartItem = cart.items[cartItemIndex];
