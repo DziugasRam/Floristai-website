@@ -27,12 +27,15 @@
 	import Slider from '@smui/slider';
 	import TextField from '@smui/textfield';
 
-	const addToCart = (flower: Flower) => {
+	const toggleCart = (flower: Flower) => {
 		shoppingCart.update((cart) => {
-			if (!cart || !cart.items) return { items: [{ flowerId: flower.flowerId, quantity: 1 }] };
-			const cartFlower = cart.items.find((item) => item.flowerId === flower.flowerId);
-			if (!cartFlower) cart.items.push({ quantity: 1, flowerId: flower.flowerId });
-			else cartFlower.quantity++;
+			if (!cart || !cart.orderLines)
+				return { orderLines: [{ flowerId: flower.flowerId, quantity: 1 }], deliveryAddress: '' };
+			const cartFlowerIndex = cart.orderLines.findIndex(
+				(orderLine) => orderLine.flowerId === flower.flowerId
+			);
+			if (cartFlowerIndex === -1) cart.orderLines.push({ quantity: 1, flowerId: flower.flowerId });
+			else cart.orderLines.splice(cartFlowerIndex, 1);
 			return cart;
 		});
 	};
@@ -55,11 +58,14 @@
 </svelte:head>
 
 <div class="root">
-	<div>
-		<h1>Title</h1>
-		<p>something</p>
-		<p>maybe some image</p>
-		<p>filters for types of flowers (recommended, exotic, on sale, new)</p>
+	<div style="height: 500px; width: 100%; object-fit: cover; overflow: hidden">
+		<div style="position: absolute; display: flex; width: 100%; height: 500px; justify-content: center; align-items: center">
+			<h1 style="color: white; font-size: 69px">Floristai</h1>
+		</div>
+		<img
+			src="https://cdn.discordapp.com/attachments/390904190446338048/981660100076904559/r-orig-orig-rozi-cvetia.jpg"
+			alt="Flowers"
+		/>
 	</div>
 	<div class="content">
 		<div class="side-content">
@@ -146,8 +152,8 @@
 									>
 									<IconButton
 										class="material-icons"
-										on:click={() => addToCart(flower)}
-										title="Add to cart">shopping_cart</IconButton
+										on:click={() => toggleCart(flower)}
+										title="Add to cart">{$shoppingCart?.orderLines.some(o => o.flowerId === flower.flowerId) ? "shopping_cart" : "add_shopping_cart"}</IconButton
 									>
 								</ActionIcons>
 							</Actions>

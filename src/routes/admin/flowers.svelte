@@ -3,7 +3,14 @@
 </script>
 
 <script lang="ts">
-	import { flowers, flowersFilter, flowersLoading, shoppingCart, user, type Flower } from '../../stores';
+	import {
+		flowers,
+		flowersFilter,
+		flowersLoading,
+		shoppingCart,
+		user,
+		type Flower
+	} from '../../stores';
 	import Card, {
 		Content,
 		PrimaryAction,
@@ -20,15 +27,14 @@
 	import Slider from '@smui/slider';
 	import TextField from '@smui/textfield';
 	import { deleteFlower } from '../../api';
-import { goto } from '$app/navigation';
+	import { goto } from '$app/navigation';
 
 	const deleteFlowerById = async (flowerId: number) => {
 		try {
-			if($user?.token)
-				await deleteFlower(flowerId, $user.token);
-				flowersFilter.update(v => v);
-		} catch {
-			alert('Failed to delete flower');
+			if ($user?.token) await deleteFlower(flowerId, $user.token);
+			flowersFilter.update((v) => v);
+		} catch (e: any) {
+			alert(e);
 		}
 	};
 </script>

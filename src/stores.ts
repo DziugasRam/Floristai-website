@@ -87,10 +87,11 @@ export type Flower = {
 };
 
 export type ShoppingCart = {
-	items: {
+	orderLines: {
 		quantity: number;
 		flowerId: number;
 	}[];
+	deliveryAddress: string
 };
 
 export type Order = {

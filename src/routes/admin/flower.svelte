@@ -35,8 +35,8 @@
 				await createFlower(flower, $user.token);
 
 			goto('/admin/flowers');
-		} catch {
-			alert('Failed to create flower');
+		} catch (e: any) {
+			alert(e.message);
 		}
 	};
 </script>

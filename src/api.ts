@@ -1,4 +1,4 @@
-import type { Flower, FlowersFilter, User } from './stores';
+import type { Flower, FlowersFilter, ShoppingCart, User } from './stores';
 
 const BASE_URL = 'https://localhost:7155/';
 
@@ -94,7 +94,11 @@ export const updateFlower = async (flower: Flower, token: string) => {
 		body: JSON.stringify(flower)
 	});
 
-	if (!result.ok) throw new Error(`Create flower failed with status code: ${result.status}`);
+	if (!result.ok) {
+		if (result.status === 409)
+			throw new Error(`Flower was updated in another page. Refresh the page and try again.`);
+		throw new Error(`Update flower failed with status code: ${result.status}`);
+	}
 
 	return await result.json();
 };
@@ -106,8 +110,23 @@ export const deleteFlower = async (flowerId: number, token: string) => {
 			'Content-Type': 'application/json',
 			Authorization: `Bearer ${token}`
 		},
-		body: flowerId + ""
+		body: flowerId + ''
 	});
 
 	if (!result.ok) throw new Error(`Delete flower failed with status code: ${result.status}`);
+};
+
+export const createOrder = async (shoppingCart: ShoppingCart, token: string) => {
+	const result = await fetch(`${BASE_URL}order`, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+			Authorization: `Bearer ${token}`
+		},
+		body: JSON.stringify(shoppingCart)
+	});
+	if (!result.ok) {
+		if (result.status === 409) throw new Error(`Not enough flowers left`);
+		throw new Error(`Order failed with status code: ${result.status}`);
+	}
 };
