@@ -4,7 +4,7 @@ import { getFlowers } from './api';
 export const flowersFilter = writable<FlowersFilter>({
 	occasion: [],
 	packaging: [],
-	maxPrice: 10,
+	maxPrice: 100,
 	minPrice: 0
 });
 

@@ -28,6 +28,8 @@
 	import TextField from '@smui/textfield';
 	import Checkbox from '@smui/checkbox';
 
+	let filterFavorites: boolean = false;
+
 	const toggleCart = (flower: Flower) => {
 		shoppingCart.update((cart) => {
 			if (!cart || !cart.orderLines)
@@ -60,7 +62,9 @@
 
 <div class="root">
 	<div style="height: 500px; width: 100%; object-fit: cover; overflow: hidden">
-		<div style="position: absolute; display: flex; width: 100%; height: 500px; justify-content: center; align-items: center">
+		<div
+			style="position: absolute; display: flex; width: 100%; height: 500px; justify-content: center; align-items: center"
+		>
 			<h1 style="color: white; font-size: 69px">Floristai</h1>
 		</div>
 		<img
@@ -101,16 +105,16 @@
 					bind:start={$flowersFilter.minPrice}
 					bind:end={$flowersFilter.maxPrice}
 					min={0}
-					max={10}
+					max={100}
 					step={0.1}
 					style="margin: 0px;"
 				/>
 			</div>
 			<div class="filter">
-				<h3>Packaging type</h3>
-				
-				<div style="display: flex; flex-direction: column">
-
+				<h3>Favorite</h3>
+				<div style="display: flex; align-items: center">
+					<Checkbox bind:checked={filterFavorites} style="display: inline-block" />
+					<span>Show only favorites</span>
 				</div>
 			</div>
 		</div>
@@ -124,7 +128,7 @@
 				</div>
 			</div>
 			<LayoutGrid fixedColumnWidth={true}>
-				{#each $flowers as flower, i}
+				{#each $flowers.filter( (f) => (filterFavorites ? $favorites?.some((fav) => fav.flowerId === f.flowerId) : true) ) as flower, i}
 					<Cell span={3}>
 						<Card padded={false} variant="outlined">
 							<!-- open flower page/dialog on click -->
@@ -161,7 +165,10 @@
 									<IconButton
 										class="material-icons"
 										on:click={() => toggleCart(flower)}
-										title="Add to cart">{$shoppingCart?.orderLines?.some(o => o.flowerId === flower.flowerId) ? "shopping_cart" : "add_shopping_cart"}</IconButton
+										title="Add to cart"
+										>{$shoppingCart?.orderLines?.some((o) => o.flowerId === flower.flowerId)
+											? 'shopping_cart'
+											: 'add_shopping_cart'}</IconButton
 									>
 								</ActionIcons>
 							</Actions>
@@ -226,15 +233,17 @@
 	}
 
 	.flower-image-wrapper {
-		max-height: 100%;
-		max-width: 100%;
-		overflow: hidden;
 		display: flex;
+		width: 100%;
+		height: 100%;
+		overflow: hidden;
 		align-items: center;
+		justify-content: center;
 	}
 
 	.flower-image {
-		max-width: 100%;
-		max-height: 100%;
+		min-width: 100%;
+		min-height: 100%;
+		object-fit: cover;
 	}
 </style>

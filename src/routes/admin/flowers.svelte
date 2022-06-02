@@ -42,42 +42,6 @@
 <div class="root">
 	<div class="content">
 		<div class="side-content">
-			<div class="filter">
-				<h3>Price</h3>
-				<div style="display: flex">
-					<TextField
-						variant="outlined"
-						type="number"
-						bind:value={$flowersFilter.minPrice}
-						label="Min"
-						style="margin-right: 20px; width: 96px;"
-						invalid={false}
-						input$min="0"
-						input$max="10"
-						input$step="0.1"
-					/>
-					<TextField
-						variant="outlined"
-						type="number"
-						bind:value={$flowersFilter.maxPrice}
-						label="Max"
-						style="width: 96px;"
-						invalid={false}
-						input$min="0"
-						input$max="10"
-						input$step="0.1"
-					/>
-				</div>
-				<Slider
-					range
-					bind:start={$flowersFilter.minPrice}
-					bind:end={$flowersFilter.maxPrice}
-					min={0}
-					max={10}
-					step={0.1}
-					style="margin: 0px;"
-				/>
-			</div>
 		</div>
 
 		<div class="main-content">
@@ -183,15 +147,17 @@
 	}
 
 	.flower-image-wrapper {
-		max-height: 100%;
-		max-width: 100%;
-		overflow: hidden;
 		display: flex;
+		width: 100%;
+		height: 100%;
+		overflow: hidden;
 		align-items: center;
+		justify-content: center;
 	}
 
 	.flower-image {
-		max-width: 100%;
-		max-height: 100%;
+		min-width: 100%;
+		min-height: 100%;
+		object-fit: cover;
 	}
 </style>
