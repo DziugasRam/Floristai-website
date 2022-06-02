@@ -48,12 +48,17 @@
 			goto('/profile');
 			return;
 		}
-		if (!$shoppingCart) {
+		if (!$shoppingCart?.orderLines.length) {
 			alert('Shopping cart is empty');
+			return;
+		}
+		if (!$shoppingCart?.deliveryAddress) {
+			alert('Enter a delivery address');
 			return;
 		}
 		try {
 			await createOrder($shoppingCart, $user.token);
+			shoppingCart.update((c) => ({ ...c, orderLines: [] } as any));
 		} catch (e: any) {
 			alert(e.message);
 		}
@@ -93,10 +98,13 @@
 				</Item>
 			{/each}
 		</List>
-		<Text style="margin-left: auto">
-			Total price: {shoppingCartFlowers?.reduce((acc, curr) => acc + curr.quantity*(curr.flower?.price ?? 0), 0)} €
-		</Text>
 		{#if $shoppingCart}
+			<Text style="margin-left: auto">
+				Total price: {shoppingCartFlowers?.reduce(
+					(acc, curr) => acc + curr.quantity * (curr.flower?.price ?? 0),
+					0
+				)} €
+			</Text>
 			<TextField
 				variant="outlined"
 				bind:value={$shoppingCart.deliveryAddress}
@@ -104,9 +112,9 @@
 				placeholder="Delivery address"
 				style="margin-top: 15px"
 			/>
+			<Button on:click={order}>
+				<Label>Order</Label>
+			</Button>
 		{/if}
-		<Button on:click={order}>
-			<Label>Order</Label>
-		</Button>
 	</div>
 </div>
