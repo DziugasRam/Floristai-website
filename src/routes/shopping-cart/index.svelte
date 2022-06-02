@@ -73,7 +73,10 @@
 							alt="Flower"
 						/>
 					</div>
-					<Text style="padding: 15px">{item?.flower?.name}</Text>
+					<div style="display: flex; flex-direction: column; padding: 10px">
+						<Text style="padding: 5px">{item?.flower?.name}</Text>
+						<Text style="padding: 5px">{item?.flower?.price} €</Text>
+					</div>
 					<IconButton style="margin-left: auto; color: inherit" disabled
 						>{item?.quantity}</IconButton
 					>
@@ -90,6 +93,9 @@
 				</Item>
 			{/each}
 		</List>
+		<Text style="margin-left: auto">
+			Total price: {shoppingCartFlowers?.reduce((acc, curr) => acc + curr.quantity*(curr.flower?.price ?? 0), 0)} €
+		</Text>
 		{#if $shoppingCart}
 			<TextField
 				variant="outlined"
