@@ -79,6 +79,7 @@
 							</PrimaryAction>
 							<Actions>
 								<span style="margin-left: 8px">{flower.price} €</span>
+								<span style="margin-left: 16px">Qty. {flower.quantity}</span>
 								<ActionIcons>
 									<IconButton
 										class="material-icons"
