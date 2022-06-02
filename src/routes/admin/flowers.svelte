@@ -72,12 +72,13 @@
 								</Media>
 								<Content>
 									<div class="flower-card-text-content">
-										<h2>{flower.name}</h2>
+										<h2 style="font-weight: 600">{flower.name}</h2>
 										<p>{flower.description}</p>
 									</div>
 								</Content>
 							</PrimaryAction>
 							<Actions>
+								<span style="margin-left: 8px">{flower.price} €</span>
 								<ActionIcons>
 									<IconButton
 										class="material-icons"

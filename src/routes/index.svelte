@@ -32,6 +32,7 @@
 	let filterPotted: boolean = false;
 	let filterBouquet: boolean = false;
 	let filterFlowerArrangement: boolean = false;
+	let filterIndividual: boolean = false;
 
 	const updateFilters = () => {
 		flowersFilter.update((filter) => {
@@ -39,6 +40,7 @@
 			if (filterPotted) packagingFilter.push('potted');
 			if (filterBouquet) packagingFilter.push('bouquet');
 			if (filterFlowerArrangement) packagingFilter.push('flower_arrangement');
+			if (filterIndividual) packagingFilter.push('individual');
 			return { ...filter, packaging: packagingFilter };
 		});
 	};
@@ -156,6 +158,14 @@
 					/>
 					<span>Flower Arrangement</span>
 				</div>
+				<div style="display: flex; align-items: center">
+					<Checkbox
+						bind:checked={filterIndividual}
+						style="display: inline-block"
+						on:change={updateFilters}
+					/>
+					<span>Individual</span>
+				</div>
 			</div>
 		</div>
 
@@ -187,12 +197,13 @@
 								</Media>
 								<Content>
 									<div class="flower-card-text-content">
-										<h2>{flower.name}</h2>
+										<h2 style="font-weight: 600">{flower.name}</h2>
 										<p>{flower.description}</p>
 									</div>
 								</Content>
 							</PrimaryAction>
 							<Actions>
+								<span style="margin-left: 8px">{flower.price} €</span>
 								<ActionIcons>
 									<IconButton
 										class="material-icons"
