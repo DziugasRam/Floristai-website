@@ -59,7 +59,7 @@
 		try {
 			await createOrder($shoppingCart, $user.token);
 			shoppingCart.update((c) => ({ ...c, orderLines: [] } as any));
-			goto("/");
+			goto('/');
 		} catch (e: any) {
 			alert(e.message);
 		}
@@ -75,6 +75,7 @@
 						style="display: flex; height: 75px; width: 75px; overflow: hidden; justify-content: center;"
 					>
 						<img
+							style="min-height: 100%; object-fit: cover; min-width: 100%;"
 							src={item?.flower?.imageUrl ?? 'https://m.media-amazon.com/images/I/51rYKzn7ciL.jpg'}
 							alt="Flower"
 						/>
