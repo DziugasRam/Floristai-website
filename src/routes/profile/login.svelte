@@ -42,7 +42,7 @@
 		on:submit|preventDefault={handleSubmit}
 	>
 		<Textfield bind:value={email} label="Email" />
-		<Textfield bind:value={password} label="Password" />
+		<Textfield bind:value={password} label="Password" type="password" />
 		<Button type="submit">
 			<Label>Log in</Label>
 		</Button>
