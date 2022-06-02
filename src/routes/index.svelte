@@ -26,6 +26,7 @@
 	import LinearProgress from '@smui/linear-progress';
 	import Slider from '@smui/slider';
 	import TextField from '@smui/textfield';
+	import Checkbox from '@smui/checkbox';
 
 	const toggleCart = (flower: Flower) => {
 		shoppingCart.update((cart) => {
@@ -105,6 +106,13 @@
 					style="margin: 0px;"
 				/>
 			</div>
+			<div class="filter">
+				<h3>Packaging type</h3>
+				
+				<div style="display: flex; flex-direction: column">
+					<Checkbox
+				</div>
+			</div>
 		</div>
 
 		<div class="main-content">
@@ -153,7 +161,7 @@
 									<IconButton
 										class="material-icons"
 										on:click={() => toggleCart(flower)}
-										title="Add to cart">{$shoppingCart?.orderLines.some(o => o.flowerId === flower.flowerId) ? "shopping_cart" : "add_shopping_cart"}</IconButton
+										title="Add to cart">{$shoppingCart?.orderLines?.some(o => o.flowerId === flower.flowerId) ? "shopping_cart" : "add_shopping_cart"}</IconButton
 									>
 								</ActionIcons>
 							</Actions>
