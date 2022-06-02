@@ -59,6 +59,7 @@
 		try {
 			await createOrder($shoppingCart, $user.token);
 			shoppingCart.update((c) => ({ ...c, orderLines: [] } as any));
+			goto("/");
 		} catch (e: any) {
 			alert(e.message);
 		}
