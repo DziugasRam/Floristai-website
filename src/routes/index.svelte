@@ -29,6 +29,19 @@
 	import Checkbox from '@smui/checkbox';
 
 	let filterFavorites: boolean = false;
+	let filterPotted: boolean = false;
+	let filterBouquet: boolean = false;
+	let filterFlowerArrangement: boolean = false;
+
+	const updateFilters = () => {
+		flowersFilter.update((filter) => {
+			const packagingFilter: string[] = [];
+			if (filterPotted) packagingFilter.push('potted');
+			if (filterBouquet) packagingFilter.push('bouquet');
+			if (filterFlowerArrangement) packagingFilter.push('flower_arrangement');
+			return { ...filter, packaging: packagingFilter };
+		});
+	};
 
 	const toggleCart = (flower: Flower) => {
 		shoppingCart.update((cart) => {
@@ -111,10 +124,37 @@
 				/>
 			</div>
 			<div class="filter">
-				<h3>Favorite</h3>
+				<h3>Favorites</h3>
 				<div style="display: flex; align-items: center">
 					<Checkbox bind:checked={filterFavorites} style="display: inline-block" />
 					<span>Show only favorites</span>
+				</div>
+			</div>
+			<div class="filter">
+				<h3>Packaging types</h3>
+				<div style="display: flex; align-items: center">
+					<Checkbox
+						bind:checked={filterPotted}
+						style="display: inline-block"
+						on:change={updateFilters}
+					/>
+					<span>Potted</span>
+				</div>
+				<div style="display: flex; align-items: center">
+					<Checkbox
+						bind:checked={filterBouquet}
+						style="display: inline-block"
+						on:change={updateFilters}
+					/>
+					<span>Bouquet</span>
+				</div>
+				<div style="display: flex; align-items: center">
+					<Checkbox
+						bind:checked={filterFlowerArrangement}
+						style="display: inline-block"
+						on:change={updateFilters}
+					/>
+					<span>Flower Arrangement</span>
 				</div>
 			</div>
 		</div>
