@@ -110,7 +110,7 @@
 				<h3>Packaging type</h3>
 				
 				<div style="display: flex; flex-direction: column">
-					<Checkbox
+
 				</div>
 			</div>
 		</div>
